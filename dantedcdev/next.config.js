@@ -8,4 +8,6 @@ const nextConfig = {
     assetPrefix: isProd ? 'https://diditupe.dev' : undefined,
 }
 
-module.exports = nextConfig
+module.exports = {
+    output: 'export'
+}
