@@ -37,7 +37,7 @@ const Hub: React.FC = (): ReactElement => {
                 <h1>dantedc.dev</h1>
                 <div className="hub-links">
                     <Link className="hub-link" href="portfolio">/portfolio</Link>
-                    <Link className="hub-link" href="catchfire">/catchfire</Link>
+                    <a className="hub-link" href="https://www.catchfiresports.com" target="_blank" rel="noopener noreferrer">/catchfire</a>
                     <Link className="hub-link" href="links">/links</Link>
 
                 </div>
