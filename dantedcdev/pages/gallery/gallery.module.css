@@ -1,0 +1,42 @@
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Adjust based on your preference */
+    gap: 16px;
+    position: relative;
+  }
+  
+  .galleryitem {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .galleryitem img {
+    width: 100%;
+    transition: transform 0.3s ease;
+  }
+  
+  .gallery-item.selected img {
+    transform: scale(1.1); /* Magnify the image */
+    z-index: 2;
+  }
+  
+  .caption {
+    position: absolute;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    width: 100%;
+    text-align: center;
+    padding: 8px;
+  }
+  
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7); /* Darken the background */
+    z-index: 1; /* Ensure it's below the magnified image */
+  }
+  
