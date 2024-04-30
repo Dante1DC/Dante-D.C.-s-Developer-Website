@@ -18,8 +18,8 @@ const About: React.FC = (): ReactElement => {
                 <Info title="Location" description="Lincoln, NE" />
                 <Info title="Graduating" description="2026" />
                 <Info title="Courses Taken" description="CS I & II, SE III & IV, Discrete Math & Data Structures, Statistics, Data & Models, Data & Network Security" />
-                <Info title="Skills" description="Python, Ruby on Rails, Java, C, C#, PostgreSQL, React.js, Node.js" />
-                <Info title="Learning" description="Rust, TensorFlow" />
+                <Info title="Skills" description="Python, TensorFlow, Ruby on Rails, Java, C, C#, PostgreSQL, React.js, Node.js" />
+                <Info title="Learning" description="OCaml/Functional Programming" />
             </div>
         </div>
     )
