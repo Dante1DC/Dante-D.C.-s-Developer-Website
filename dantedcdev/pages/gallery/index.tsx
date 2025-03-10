@@ -52,7 +52,7 @@ const Projects: React.FC = (): ReactElement => {
             <Project tags={["Javascript", "Extension"]} title="Speedify" descriptionLong={descriptionsLong[0]} description={descriptions[0]} href={"https://github.com/Dante1DC/Speedify-Video-Playback-Controls"} img={"/portfolio/speedify.webp"} />
             <Project tags={["Javascript", "React.js", "Startup", "PostgreSQL"]} title="CatchFire" descriptionLong={descriptionsLong[1]} description={descriptions[1]} href={"https://trycatchfire.netlify.app/"} img={"/portfolio/catchfirelogosquaresmall.png"} />
             <Project tags={["C#", "Unity", "Cybersecurity", "Education"]} title="Gone Phishing" descriptionLong={descriptionsLong[2]} description={descriptions[2]} href={"https://github.com/j-seibel/GonePhishing"} img={"/portfolio/gonephishing.png"} />
-            <Project tags={["Javascript", "React.js"]} title="dante-dc.dev" descriptionLong={descriptionsLong[3]} description={descriptions[3]} href={"https://diditupe.dev"} img={"/portfolio/gradient.png"} />
+            <Project tags={["Javascript", "React.js"]} title="dante-dc.dev" descriptionLong={descriptionsLong[3]} description={descriptions[3]} href={"https://dantedc.dev"} img={"/portfolio/gradient.png"} />
         </div>
     )
 }

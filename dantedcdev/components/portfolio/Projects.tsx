@@ -15,6 +15,20 @@ const projectsData: ProjectType[] = [
         href: "https://reachtestprep.org",
         tags: ["Machine Learning", "Data Science", "Education", "Startup", "PostgreSQL", "React.js"],
       },
+      {
+        title: "Fine-Tuned",
+        description:
+          "Rhythm game that explores the connections between technology and the arts.",
+        href: "https://github.com/Dante1DC/fine-tuned",
+        tags: ["C-Sharp", "Unity", "Music", "Education", "Hackathon"],
+      },
+      {
+        title: "Gone Phishing",
+        description:
+          "Educational video game that teaches children about Internet information safety. Phishing, be gone!",
+        href: "https://github.com/j-seibel/GonePhishing",
+        tags: ["C-Sharp", "Unity", "Cybersecurity", "Education", "Hackathon"],
+      },
   {
     title: "Speedify Video Playback Controls",
     description:
@@ -29,13 +43,7 @@ const projectsData: ProjectType[] = [
     href: "https://catchfiresports.com/",
     tags: ["Javascript", "React.js", "Startup", "Data Science", "PostgreSQL", "Cybersecurity"],
   },
-  {
-    title: "Gone Phishing",
-    description:
-      "Educational video game that teaches children about Internet information safety.",
-    href: "https://github.com/j-seibel/GonePhishing",
-    tags: ["C#", "Unity", "Cybersecurity", "Education"],
-  },
+  
   {
     title: "dantedc.dev",
     description: "My developer website! You're on it right now!",
