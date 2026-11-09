@@ -1,0 +1,302 @@
+/* Rem is avoided here: the site sets :root to 10px, and the countdown scales to its container anyway. */
+
+.root {
+  --cd-bg: #0e0e0e;
+  --cd-fg: #fff;
+  --cd-pending: #6e6e6e; /* Has to stand out from the contour lines, which land near #363636. */
+  --cd-panel: #181818;
+  --cd-line: rgba(255, 255, 255, 0.2);
+  --cd-muted: rgba(255, 255, 255, 0.64);
+  --cd-warning: #ffb86b;
+  --cd-panel-width: 380px;
+
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  color-scheme: dark;
+  background: var(--cd-bg);
+  color: var(--cd-fg);
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+}
+
+html[data-cd-theme="dark"] .root {
+  --cd-bg: #000;
+  --cd-pending: #555;
+}
+
+html[data-cd-theme="light"] .root {
+  --cd-bg: #fff;
+  --cd-fg: #000;
+  --cd-pending: #c4c4c4;
+  --cd-panel: #f5f5f5;
+  --cd-line: rgba(0, 0, 0, 0.2);
+  --cd-muted: rgba(0, 0, 0, 0.62);
+  --cd-warning: #a34a00;
+  color-scheme: light;
+}
+
+/* Needs the extra specificity to override the size and position in .hub. */
+html .background {
+  position: absolute;
+  inset: 0;
+  width: auto;
+  height: auto;
+}
+
+html[data-cd-theme="dark"] .background,
+html[data-cd-theme="light"] .background {
+  display: none;
+}
+
+.stage {
+  --pad: clamp(16px, 5vmin, 64px);
+
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  padding: max(var(--pad), env(safe-area-inset-top)) max(var(--pad), env(safe-area-inset-right))
+    max(var(--pad), env(safe-area-inset-bottom)) max(var(--pad), env(safe-area-inset-left));
+  container-type: size;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 3vmin, 40px);
+}
+
+.panelOpen .stage {
+  right: var(--cd-panel-width);
+}
+
+.text {
+  flex-shrink: 0;
+  max-width: 100%;
+  font-size: clamp(18px, 5cqmin, 56px);
+  line-height: 1.25;
+  text-align: center;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.digits {
+  --digit: 0.72;
+  --group-gap: 0.45;
+
+  display: flex;
+  flex-shrink: 0;
+  line-height: 1;
+  font-size: min(calc(100cqw / (var(--digits) * var(--digit) + (var(--groups) - 1) * var(--group-gap))), 40cqh);
+}
+
+.group {
+  display: flex;
+}
+
+.group + .group {
+  margin-left: calc(var(--group-gap) * 1em);
+}
+
+/* A fixed cell for each digit keeps the numbers from shifting as they change. */
+.digit {
+  display: block;
+  width: calc(var(--digit) * 1em);
+  text-align: center;
+}
+
+.track {
+  flex-shrink: 0;
+  width: 100%;
+  height: clamp(12px, 5cqmin, 56px);
+  overflow: hidden;
+  background: var(--cd-pending);
+}
+
+.fill {
+  width: 100%;
+  height: 100%;
+  background: var(--cd-fg);
+  transform-origin: left center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fill {
+    transition: none !important;
+  }
+}
+
+.gridWrap {
+  position: relative;
+  flex: 1 1 0;
+  width: 100%;
+  min-height: 0;
+}
+
+.gridCanvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Config panel */
+
+.panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: var(--cd-panel-width);
+  max-width: 100%;
+  padding: 20px;
+  overflow-y: auto;
+  border-left: 1px solid var(--cd-line);
+  background: var(--cd-panel);
+  font-family: "Wix Madefor Text", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+  outline: none;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panelTitle {
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.close {
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: inherit;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.label {
+  color: var(--cd-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.input {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--cd-line);
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  resize: vertical;
+}
+
+.input option {
+  background: var(--cd-panel);
+}
+
+.segments {
+  display: flex;
+  overflow: hidden;
+  border: 1px solid var(--cd-line);
+  border-radius: 6px;
+}
+
+.segment {
+  flex: 1;
+  padding: 8px 4px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.segmentOn {
+  background: var(--cd-fg);
+  color: var(--cd-panel);
+  font-weight: 600;
+}
+
+.checks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.note {
+  color: var(--cd-muted);
+  font-size: 12px;
+}
+
+.warning {
+  margin: 0;
+  color: var(--cd-warning);
+  font-size: 12px;
+}
+
+.linkRow {
+  display: flex;
+  gap: 8px;
+}
+
+.copy {
+  flex-shrink: 0;
+  min-width: 72px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--cd-fg);
+  color: var(--cd-panel);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.panel button:focus-visible,
+.panel input:focus-visible,
+.panel select:focus-visible,
+.panel textarea:focus-visible {
+  outline: 2px solid var(--cd-fg);
+  outline-offset: 1px;
+}
+
+@media (max-width: 700px) {
+  .root {
+    --cd-panel-width: 100%;
+  }
+
+  .panelOpen .stage {
+    right: 0;
+  }
+}
