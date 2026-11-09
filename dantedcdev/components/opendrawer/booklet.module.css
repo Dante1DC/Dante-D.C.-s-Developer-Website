@@ -1,0 +1,754 @@
+/* The site's global stylesheet sets 1rem = 10px, a pink h1, forced weight 400 on
+   text elements, and no reset. Everything here is class-scoped and sized in px
+   or container units so none of that reaches the manual. */
+
+.root {
+  --paper: #fff;
+  --ink: #141414;
+  --red: #d6181f;
+  --yellow: #ffc800;
+  --blue: #0a57a4;
+  --tint: #dcebf7;
+  --turn: 320ms;
+  --bar: calc(76px + env(safe-area-inset-bottom));
+  --pad: 16px;
+  --pos: var(--i);
+  --drag: 0px;
+  --spread: 0;
+  --bar-ink: var(--ink);
+
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) var(--bar);
+  background: var(--paper);
+  color: var(--ink);
+  overflow: clip;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.book {
+  min-height: 0;
+  overflow: clip;
+}
+
+.track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transform: translate3d(calc(var(--pos) * -100% + var(--drag)), 0, 0);
+  touch-action: pan-y pinch-zoom;
+}
+
+.root[data-turning] .track {
+  transition: transform var(--turn) cubic-bezier(0.22, 0.9, 0.3, 1);
+}
+
+.page {
+  flex: 0 0 100%;
+  height: 100%;
+  position: relative;
+  background: var(--paper);
+  visibility: hidden;
+  container-type: size;
+  overflow: clip;
+}
+
+.page[data-phone] {
+  visibility: visible;
+}
+
+/* The outgoing page stays visible until the slide has finished. */
+.root[data-turning] .page {
+  transition: visibility 0s linear var(--turn);
+}
+
+.root[data-turning] .page[data-phone] {
+  transition: visibility 0s;
+}
+
+.root[data-dragging] .page {
+  visibility: visible;
+}
+
+.sheet {
+  height: 100%;
+  box-sizing: border-box;
+  padding: 14px var(--pad) 12px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 10px;
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.num {
+  margin: 0;
+  font-size: clamp(64px, 16cqb, 118px);
+  font-weight: 900;
+  line-height: 0.84;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+}
+
+.headText {
+  min-width: 0;
+  padding-top: 3px;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(22px, 6.4cqi, 34px);
+  font-weight: 700;
+  line-height: 1.12;
+  color: var(--ink);
+  text-wrap: balance;
+  outline: none;
+}
+
+.note {
+  margin: 6px 0 0;
+  font-size: clamp(18px, 5cqi, 23px);
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+.art {
+  position: relative;
+  min-height: 0;
+  margin-inline: calc(var(--pad) * -1);
+  overflow: clip;
+}
+
+.art svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.art :global(.replay) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.art text,
+.coverArt text,
+.backArt text {
+  font-family: inherit;
+}
+
+.replayHint {
+  position: absolute;
+  left: var(--pad);
+  bottom: 2px;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  pointer-events: none;
+}
+
+.touchOnly,
+.mouseOnly {
+  font-weight: 700;
+}
+
+.mouseOnly {
+  display: none;
+}
+
+@media (hover: hover) {
+  .touchOnly {
+    display: none;
+  }
+  .mouseOnly {
+    display: inline;
+  }
+}
+
+.panel {
+  display: grid;
+  grid-template-columns: minmax(96px, 30%) minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 2.5px solid var(--ink);
+  border-radius: 14px;
+  background: var(--tint);
+}
+
+.panelArt :global(.tipArt) {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.tag {
+  display: inline-block;
+  margin: 0 0 4px;
+  padding: 2px 9px 3px;
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.tagPro {
+  background: var(--yellow);
+  color: var(--ink);
+}
+
+.tagWarn {
+  background: var(--red);
+  color: var(--paper);
+}
+
+.panelText {
+  margin: 0;
+  font-size: clamp(18px, 4.8cqi, 22px);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.parts {
+  justify-self: start;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 18px 8px 12px;
+  border: 2.5px solid var(--ink);
+  border-radius: 14px;
+  background: var(--tint);
+}
+
+.parts :global(.partIcon) {
+  display: block;
+  width: 56px;
+  height: auto;
+  overflow: visible;
+}
+
+.partsText {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.partsCount {
+  font-weight: 900;
+}
+
+/* Page numbers appear in the booklet only. On a phone the bar already says where you are. */
+.folio {
+  display: none;
+  position: absolute;
+  right: var(--pad);
+  bottom: 10px;
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.page[data-side="left"] .folio {
+  right: auto;
+  left: var(--pad);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+/* Cover: the one full-color field in the booklet. */
+
+.cover {
+  height: 100%;
+  box-sizing: border-box;
+  padding: clamp(18px, 5cqi, 34px) clamp(18px, 6cqi, 40px);
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  gap: 12px;
+  background: var(--red);
+  color: var(--paper);
+}
+
+.coverSub {
+  display: flex;
+  align-items: center;
+  height: clamp(51px, 15.84cqi, 84px);
+  margin: 0;
+  font-size: clamp(34px, 11cqi, 58px);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--yellow);
+}
+
+.coverTitle {
+  margin: 0;
+  font-size: clamp(60px, 21cqi, 118px);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  color: var(--paper);
+  outline: none;
+}
+
+.coverArt {
+  min-height: 0;
+}
+
+.coverArt svg,
+.backArt svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Back cover */
+
+.back {
+  height: 100%;
+  box-sizing: border-box;
+  padding: 28px 20px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 16px;
+  background: var(--yellow);
+  justify-items: start;
+}
+
+.backTitle {
+  margin: 0;
+  font-size: clamp(46px, 15cqi, 84px);
+  font-weight: 900;
+  line-height: 0.96;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  outline: none;
+}
+
+.backArt {
+  min-height: 0;
+  width: 100%;
+}
+
+.restart {
+  min-height: 56px;
+  padding: 0 24px;
+  border: 2.5px solid var(--ink);
+  border-radius: 12px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Troubleshooting and fun facts */
+
+.list {
+  height: 100%;
+  box-sizing: border-box;
+  padding: 16px var(--pad) 8px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 8px;
+}
+
+.listTitle {
+  margin: 0;
+  font-size: clamp(32px, 10cqi, 50px);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  outline: none;
+}
+
+.scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  border-top: 3px solid var(--ink);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  padding: 13px 0;
+  border-bottom: 2px solid var(--ink);
+}
+
+.rowArt {
+  display: block;
+  width: 58px;
+  height: 58px;
+  overflow: visible;
+}
+
+.rowHead {
+  margin: 0 0 4px;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.rowBody {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.rowLink {
+  margin: 0;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+}
+
+/* Control bar: everything the thumb needs, at the bottom */
+
+.bar {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) 48px auto;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px env(safe-area-inset-bottom);
+  background: var(--paper);
+  border-top: 3px solid var(--ink);
+}
+
+.prev,
+.next {
+  height: 60px;
+  min-width: 64px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 8px;
+  border: 2.5px solid var(--ink);
+  border-radius: 12px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.prev,
+.next {
+  color: var(--paper);
+}
+
+.prev {
+  background: var(--paper);
+}
+
+.next {
+  background: var(--yellow);
+}
+
+.nextStart {
+  padding: 0 14px 0 18px;
+}
+
+.nextLabel {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--ink);
+}
+
+.prev:disabled,
+.next:disabled {
+  opacity: 0.28;
+  cursor: default;
+}
+
+.chevron {
+  width: 32px;
+  height: 32px;
+  display: block;
+}
+
+.progress {
+  min-width: 0;
+}
+
+.progressLabel {
+  margin: 0 0 5px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--bar-ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.onDesk {
+  display: none;
+  font-weight: 700;
+}
+
+.onPhone {
+  font-weight: 700;
+}
+
+.studs {
+  display: flex;
+  gap: 3px;
+}
+
+.stud {
+  display: block;
+  flex: 1 1 0;
+  max-width: 11px;
+  height: 11px;
+  border: 2px solid var(--bar-ink);
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+
+.stud[data-phone] {
+  background: var(--bar-ink);
+}
+
+.sound {
+  width: 48px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  color: var(--bar-ink);
+  cursor: pointer;
+}
+
+.soundIcon {
+  width: 30px;
+  height: 30px;
+  display: block;
+}
+
+.prev:focus-visible,
+.next:focus-visible,
+.sound:focus-visible,
+.restart:focus-visible,
+.scroll:focus-visible,
+.art :global(.replay):focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) {
+  .prev:hover:not(:disabled),
+  .restart:hover {
+    background: var(--tint);
+  }
+  .next:hover:not(:disabled) {
+    background: #ffd84a;
+  }
+}
+
+/* Phone held sideways: drawing beside the words. */
+
+@media (max-height: 480px) and (orientation: landscape) {
+  .sheet {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+  .head {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .art {
+    grid-column: 2;
+    grid-row: 1 / -1;
+    margin: 0;
+  }
+  .panel,
+  .parts {
+    grid-column: 1;
+    grid-row: 2;
+    align-self: start;
+  }
+  .num {
+    font-size: 58px;
+  }
+  .cover,
+  .back {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  }
+  .coverSub {
+    grid-column: 1;
+    height: auto;
+    font-size: 28px;
+  }
+  .coverTitle {
+    grid-column: 1;
+    font-size: clamp(38px, 17cqb, 68px);
+  }
+  .coverArt {
+    grid-column: 2;
+    grid-row: 1 / -1;
+  }
+  .back {
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+  .backTitle {
+    grid-column: 1;
+    grid-row: 1;
+    font-size: clamp(36px, 16cqb, 62px);
+  }
+  .restart {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .backArt {
+    grid-column: 2;
+    grid-row: 1 / -1;
+  }
+}
+
+/* Desktop: an open booklet lying on a blue desk. */
+
+@media (min-width: 900px) and (min-height: 560px) {
+  .root {
+    --spread: 1;
+    --pos: var(--s);
+    --pad: 28px;
+    --bar-ink: var(--paper);
+    background: var(--blue);
+  }
+
+  .book {
+    align-self: center;
+    justify-self: center;
+    height: min(calc(100dvh - var(--bar) - 44px), calc((100vw - 96px) / 1.46));
+    aspect-ratio: 1.46;
+    filter: drop-shadow(0 16px 24px rgba(0, 0, 0, 0.32));
+  }
+
+  .page {
+    flex-basis: 50%;
+  }
+
+  .single {
+    margin-inline: 25%;
+  }
+
+  .page[data-phone] {
+    visibility: hidden;
+  }
+
+  .page[data-desk] {
+    visibility: visible;
+  }
+
+  .root[data-turning] .page[data-phone] {
+    transition: visibility 0s linear var(--turn);
+  }
+
+  .root[data-turning] .page[data-desk] {
+    transition: visibility 0s;
+  }
+
+  .sheet {
+    padding: 22px var(--pad) 36px;
+  }
+
+  .list {
+    padding-bottom: 36px;
+  }
+
+  .folio {
+    display: block;
+  }
+
+  .page[data-side="left"]::after,
+  .page[data-side="right"]::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 36px;
+    pointer-events: none;
+  }
+
+  .page[data-side="left"]::after {
+    right: 0;
+    background: linear-gradient(to left, rgba(20, 20, 20, 0.16), rgba(20, 20, 20, 0));
+  }
+
+  .page[data-side="right"]::after {
+    left: 0;
+    background: linear-gradient(to right, rgba(20, 20, 20, 0.16), rgba(20, 20, 20, 0));
+  }
+
+  .bar {
+    width: min(620px, calc(100vw - 48px));
+    justify-self: center;
+    background: none;
+    border-top: 0;
+  }
+
+  .onPhone {
+    display: none;
+  }
+
+  .onDesk {
+    display: inline;
+  }
+
+  .stud[data-phone] {
+    background: none;
+  }
+
+  .stud[data-desk] {
+    background: var(--bar-ink);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root[data-turning] .track {
+    transition: none;
+  }
+  .root[data-turning] .page {
+    transition: none;
+  }
+}
